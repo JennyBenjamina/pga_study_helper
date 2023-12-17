@@ -48,10 +48,9 @@ function LandingPage() {
           Welcome to <span className="landing-page-title">Beeline</span>
         </h1>
         <p className="landing-page-para">
-          Beeline takes the materials you commonly use in your courses and
-          generates a number of questions that can help supplement your
-          studying. Note that the more relevant resources you upload, the more
-          accurate and relevant your Beeline will be.
+          Beeline helps you prepare for the tests in the PGA program. The
+          questions and answers come straight from the textbook given from
+          canvas.
         </p>
         <Button variant="custom" onClick={routeChange}>
           Let's Get Started

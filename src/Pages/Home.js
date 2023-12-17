@@ -37,20 +37,20 @@ function Home() {
         <div className="Home-left-top">
           <h2 className="Home-heading">Let’s buzz through your materials</h2>
           <p className="Home-paragraph">
-            Beeline takes the materials you commonly use in your courses and
-            generates a number of questions that can help supplement your
-            studying. Note that the more relevant resources you upload, the more
-            accurate and relevant your Beeline will be.
+            Beeline takes the lecture files from canvas and generates a number
+            of questions that can help supplement your studying.{' '}
+            <span className="Home-notice">
+              Note that the more relevant resources you upload, the more
+              accurate and relevant your Beeline will be.
+            </span>
           </p>
         </div>
 
         <div className="Home-practice-questions">
           <h2 className="Home-practice-heading">Practice Questions</h2>
           <p className="Home-practicing-paragraph">
-            These questions will help our AI generate questions that are more
-            targeted toward your class and professor’s expectations. Example
-            questions may include previous midterms, finals, quizzes, or any
-            other test prompts that your professor may have given you.
+            These questions are TRUE/FALSE and multiple choice questions that
+            are generated from your uploaded files.{' '}
           </p>
           <InputFiles sendData={(d) => setData(d)} setInput={setInput} />
         </div>

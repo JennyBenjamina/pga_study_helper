@@ -14,23 +14,27 @@ function InputFiles({ sendData, setInput }) {
 
   const onFileChange = (e) => {
     if (e.target && e.target.files[0]) {
-      formData.append('file', e.target.files[0]);
+      formData.append('files', e.target.files[0]);
       formData.append('userInput', sliderValue);
+      console.log(...formData);
     }
   };
+  // https://pgastudyguide.me/pga-study-helper-server/
 
   const submitFilesData = () => {
     setLoad(true);
-    // axios
-    //   .post('http://localhost:5000/data', formData) // this was formData
-    //   .then((res) => {
-    //     setLoad(false);
-    //     setText(res.data);
-    //     sendData(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    axios
+      .post('http://localhost:5000', formData) // this was formData
+      .then((res) => {
+        setLoad(false);
+        console.log(res);
+        // setText(res.data);
+        // sendData(res.data);
+        // console.log('from InputFiles.js', res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const moreAccuracy = () => {
@@ -64,7 +68,7 @@ function InputFiles({ sendData, setInput }) {
     <div className="input-files-container">
       <Form encType="multipart/form-data">
         <Form.Group className="mb-3" controlId="lecturePdf">
-          <Form.Label>Lecture Slides PDF</Form.Label>
+          <Form.Label>PGA Slides input here (PDF)</Form.Label>
           <Form.Control
             type="file"
             placeholder="Enter lecture slides in pdf form"
@@ -73,6 +77,9 @@ function InputFiles({ sendData, setInput }) {
             onChange={onFileChange}
           />
         </Form.Group>
+        <Button variant="custom" type="button" onClick={submitFilesData}>
+          Upload File
+        </Button>
         <Form.Group controlId="numericValue">
           <Form.Label>How many practice questions would you like?</Form.Label>
           <RangeSlider
@@ -85,9 +92,6 @@ function InputFiles({ sendData, setInput }) {
             {sliderValue}
           </Form.Text>
         </Form.Group>
-        <Button variant="custom" type="button" onClick={submitFilesData}>
-          Start Generating
-        </Button>{' '}
         <Button variant="custom" type="button" onClick={moreAccuracy}>
           More Accuracy
         </Button>
