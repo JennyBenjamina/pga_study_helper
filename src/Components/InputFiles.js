@@ -22,9 +22,14 @@ function InputFiles({ sendData, setInput }) {
   // https://pgastudyguide.me/pga-study-helper-server/
 
   const submitFilesData = () => {
+    console.log(process.env.NODE_ENV);
     setLoad(true);
+    const serverURL =
+      process.env.NODE_ENV === 'development'
+        ? process.env.REACT_APP_DEV_URL
+        : process.env.REACT_APP_PROD_URL;
     axios
-      .post('http://localhost:5000', formData) // this was formData
+      .post(serverURL, formData) // this was formData
       .then((res) => {
         setLoad(false);
         console.log(res);

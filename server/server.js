@@ -17,11 +17,14 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
+
 const uploads = multer({ storage: storage });
+
 app.get('/', (req, res) => {
   res.send('Hello World!!!!!');
 });
 
+// create a post route to handle the file upload
 app.post('/', uploads.array('files'), (req, res) => {
   console.log(req.body);
   console.log(req.files);
