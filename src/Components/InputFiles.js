@@ -25,10 +25,7 @@ function InputFiles({ sendData, setInput }) {
   const submitFilesData = () => {
     console.log(process.env.NODE_ENV);
     setLoad(true);
-    const serverURL =
-      process.env.NODE_ENV === 'development'
-        ? process.env.REACT_APP_DEV_URL
-        : process.env.REACT_APP_PROD_URL;
+    const serverURL = 'https://pgastudyguide.me/pga-study-helper-server';
     axios
       .post(serverURL + '/addFile', formData) // this was formData
       .then((res) => {
@@ -49,7 +46,7 @@ function InputFiles({ sendData, setInput }) {
     setLoad(true);
 
     axios
-      .post('http://localhost:5000/query', { numQuestions: sliderValue })
+      .post('https://pgastudyguide.me/query', { numQuestions: sliderValue })
       .then((res) => {
         setLoad(false);
         if (res.data !== 'no file uploaded') {
