@@ -11,6 +11,7 @@ function InputFiles({ sendData, setInput }) {
   const [text, setText] = useState('');
 
   const [load, setLoad] = useState(false);
+  const [sliderValue, setSliderValue] = useState(5);
 
   const onFileChange = (e) => {
     if (e.target && e.target.files[0]) {
@@ -29,10 +30,11 @@ function InputFiles({ sendData, setInput }) {
         ? process.env.REACT_APP_DEV_URL
         : process.env.REACT_APP_PROD_URL;
     axios
-      .post(serverURL, formData) // this was formData
+      .post(serverURL + '/addFile', formData) // this was formData
       .then((res) => {
         setLoad(false);
         console.log(res);
+        setFormData(new FormData());
         // setText(res.data);
         // sendData(res.data);
         // console.log('from InputFiles.js', res.data);
@@ -42,28 +44,27 @@ function InputFiles({ sendData, setInput }) {
       });
   };
 
-  const moreAccuracy = () => {
+  const query = () => {
     setInput(true);
     setLoad(true);
 
-    // axios
-    //   .post('http://localhost:5000/moreAccuracy', { data: text })
-    //   .then((res) => {
-    //     setLoad(false);
-    //     if (res.data !== 'no file uploaded') {
-    //       setText(res.data);
-    //       sendData(res.data);
-    //     } else {
-    //       setText('no file uploaded');
-    //       sendData('no file uploaded');
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    axios
+      .post('http://localhost:5000/query', { numQuestions: sliderValue })
+      .then((res) => {
+        setLoad(false);
+        if (res.data !== 'no file uploaded') {
+          console.log(res);
+          setText(res.data);
+          sendData(res.data);
+        } else {
+          setText('no file uploaded');
+          sendData('no file uploaded');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-
-  const [sliderValue, setSliderValue] = useState(5);
 
   const handleSliderChange = (event) => {
     setSliderValue(event.target.value);
@@ -89,7 +90,7 @@ function InputFiles({ sendData, setInput }) {
           <Form.Label>How many practice questions would you like?</Form.Label>
           <RangeSlider
             min={1}
-            max={10}
+            max={20}
             value={sliderValue}
             onChange={handleSliderChange}
           />
@@ -97,8 +98,8 @@ function InputFiles({ sendData, setInput }) {
             {sliderValue}
           </Form.Text>
         </Form.Group>
-        <Button variant="custom" type="button" onClick={moreAccuracy}>
-          More Accuracy
+        <Button variant="custom" type="button" onClick={query}>
+          Generate Practice Questions
         </Button>
       </Form>
       {load ? (

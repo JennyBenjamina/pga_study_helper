@@ -11,7 +11,6 @@ function Useranswers({ sendUserData }) {
     sendUserData(userAns);
   };
 
-  //   onChange={e => setText(e.target.value)}
   return (
     <Form onSubmit={checkAnswer} className="userAns">
       <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">

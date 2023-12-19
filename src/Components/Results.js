@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import QuesAns from './QuesAns';
 import { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
@@ -12,6 +12,7 @@ function Results({ data }) {
 
   let questions = [];
   let formattedQuestions = [];
+  const [quesAns, setQues] = useState([]);
 
   const cleanData = () => {
     questions = data.split(/\d(?=\.)+|\n|Q/).filter(Boolean);
@@ -26,6 +27,52 @@ function Results({ data }) {
   };
 
   cleanData();
+
+  useEffect(() => {
+    const lines = data.split('\n');
+    let question = '';
+    let options = [];
+    let correctAnswer = '';
+
+    const questions = [];
+
+    lines.forEach((line) => {
+      if (line.startsWith('Question:')) {
+        // If a new question starts and there's a previous question, push it to the array
+        if (question) {
+          questions.push({
+            question,
+            options,
+            correctAnswer,
+          });
+
+          // Reset variables for the new question
+          question = '';
+          options = [];
+          correctAnswer = '';
+        }
+
+        question = line.replace('Question: ', '');
+      } else if (line.startsWith('Option:')) {
+        options.push(line.replace('Option: ', ''));
+      } else if (line.startsWith('CorrectAnswer:')) {
+        correctAnswer = line.replace('CorrectAnswer: ', '');
+      }
+    });
+
+    // Push the last question to the array
+    if (question) {
+      questions.push({
+        question,
+        options,
+        correctAnswer,
+      });
+    }
+
+    setQues(questions);
+    console.log(questions);
+  }, [data]);
+
   return (
     <>
       <h1 className="questions_title">Practice Questions</h1>
@@ -35,8 +82,9 @@ function Results({ data }) {
         variant="dark"
         activeIndex={index}
         onSelect={handleSelect}
+        interval={null}
       >
-        {formattedQuestions.map((x, indx) => (
+        {/* {formattedQuestions.map((x, indx) => (
           // <Card style={{ width: '100%' }} key={indx}>
           <Carousel.Item
             key={indx}
@@ -46,6 +94,16 @@ function Results({ data }) {
             <QuesAns quesAns={x} indx={indx} />
           </Carousel.Item>
           // </Card>
+        ))} */}
+
+        {/* <Carousel.Item>
+          <QuesAns quesAns={quesAns} />
+        </Carousel.Item> */}
+
+        {quesAns.map((item, index) => (
+          <Carousel.Item key={index}>
+            <QuesAns quesAns={item} indx={index} />
+          </Carousel.Item>
         ))}
       </Carousel>
     </>
