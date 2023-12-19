@@ -22,6 +22,9 @@ import { OpenAI } from 'langchain/llms/openai';
 
 import { v4 as uuidv4 } from 'uuid';
 
+import { ReadableStream } from 'web-streams-polyfill/ponyfill/es2018';
+global.ReadableStream = ReadableStream;
+
 import dotenv from 'dotenv';
 dotenv.config();
 
